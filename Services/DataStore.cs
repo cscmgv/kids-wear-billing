@@ -85,6 +85,38 @@ namespace KidsBillingApp.Services
             {
                 SeedInitialData();
                 SaveData();
+                return;
+            }
+
+            // Ensure Men and Women products exist
+            bool hasMen = Data.Products.Any(p => p.Department == "Men");
+            bool hasWomen = Data.Products.Any(p => p.Department == "Women");
+
+            if (!hasMen || !hasWomen)
+            {
+                var seed = new List<Product>();
+                if (!hasMen)
+                {
+                    seed.Add(new Product { Id = "m1", Department = "Men", Name = "Men Premium Slim Fit Cotton Shirt", SKU = "MW-SHR-01", Category = "Shirts", AgeGroup = "Adult", Size = "L", Brand = "Peter England", Price = 999, MRP = 1499, CostPrice = 600, TaxRate = 5, Stock = 20, MinLevel = 5, ImageUrl = "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300" });
+                    seed.Add(new Product { Id = "m2", Department = "Men", Name = "Men Casual Crew Neck T-Shirt", SKU = "MW-TSH-02", Category = "T-Shirts", AgeGroup = "Adult", Size = "M", Brand = "US Polo", Price = 499, MRP = 799, CostPrice = 280, TaxRate = 5, Stock = 30, MinLevel = 8, ImageUrl = "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=300" });
+                    seed.Add(new Product { Id = "m3", Department = "Men", Name = "Men Stretchable Denim Jeans", SKU = "MW-JNS-03", Category = "Jeans", AgeGroup = "Adult", Size = "32", Brand = "Levis", Price = 1499, MRP = 2199, CostPrice = 900, TaxRate = 5, Stock = 14, MinLevel = 4, ImageUrl = "https://images.unsplash.com/photo-1542272604-780c36856842?w=300" });
+                    seed.Add(new Product { Id = "m4", Department = "Men", Name = "Men Traditional Silk Kurta Set", SKU = "MW-ETH-04", Category = "Ethnic Wear", AgeGroup = "Adult", Size = "XL", Brand = "Manyavar", Price = 2199, MRP = 2999, CostPrice = 1400, TaxRate = 12, Stock = 7, MinLevel = 2, ImageUrl = "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=300" });
+                }
+                if (!hasWomen)
+                {
+                    seed.Add(new Product { Id = "w1", Department = "Women", Name = "Women Designer Silk Saree with Zari", SKU = "WW-SAR-01", Category = "Sarees", AgeGroup = "Adult", Size = "Free", Brand = "Nalli Silk", Price = 2999, MRP = 3999, CostPrice = 1800, TaxRate = 5, Stock = 12, MinLevel = 3, ImageUrl = "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=300" });
+                    seed.Add(new Product { Id = "w2", Department = "Women", Name = "Women Printed Anarkali Kurti Set", SKU = "WW-KUR-02", Category = "Kurtis", AgeGroup = "Adult", Size = "M", Brand = "Biba", Price = 1199, MRP = 1699, CostPrice = 700, TaxRate = 5, Stock = 18, MinLevel = 5, ImageUrl = "https://images.unsplash.com/photo-1583391733975-d147321287c2?w=300" });
+                    seed.Add(new Product { Id = "w3", Department = "Women", Name = "Women Designer Salwar Suit Set", SKU = "WW-SLW-03", Category = "Salwar", AgeGroup = "Adult", Size = "L", Brand = "Aurelia", Price = 1599, MRP = 2299, CostPrice = 950, TaxRate = 5, Stock = 10, MinLevel = 4, ImageUrl = "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=300" });
+                    seed.Add(new Product { Id = "w4", Department = "Women", Name = "Women Chic Floral Summer Top", SKU = "WW-TOP-04", Category = "Tops", AgeGroup = "Adult", Size = "S", Brand = "Westside", Price = 699, MRP = 999, CostPrice = 400, TaxRate = 5, Stock = 22, MinLevel = 6, ImageUrl = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300" });
+                }
+
+                foreach (var p in Data.Products)
+                {
+                    if (string.IsNullOrEmpty(p.Department)) p.Department = "Kids";
+                }
+
+                Data.Products.AddRange(seed);
+                SaveData();
             }
         }
 
