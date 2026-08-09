@@ -75,16 +75,15 @@
                 </a>
             </nav>
 
-            <!-- User Footer -->
-            <div class="sidebar-user" id="sidebar-user-card" onclick="showLoginPortal()" title="Click to Switch Store Department / User Role">
+            <!-- Store Status Footer -->
+            <div class="sidebar-user" id="sidebar-user-card" title="Store Manager - StorePilot POS">
                 <div class="user-avatar">
-                    <i class="fa-solid fa-user-gear" id="user-role-avatar"></i>
+                    <i class="fa-solid fa-store" id="user-role-avatar"></i>
                 </div>
                 <div class="user-info">
-                    <div class="user-name" id="logged-user-name">System Admin</div>
-                    <div class="user-role" id="logged-user-role"><span class="status-dot"></span> Admin (<span id="logged-dept-badge">Kids</span>)</div>
+                    <div class="user-name" id="logged-user-name">Store Manager</div>
+                    <div class="user-role" id="logged-user-role"><span class="status-dot"></span> Active</div>
                 </div>
-                <i class="fa-solid fa-arrow-right-from-bracket logout-btn" onclick="logout(event)" title="Switch Store / Logout"></i>
             </div>
         </aside>
 
@@ -96,18 +95,7 @@
                     <h1 class="page-title" id="page-title">Dashboard</h1>
                     <span class="badge-role" id="topbar-role-badge">Role: Admin</span>
 
-                    <!-- 3-DEPARTMENT SHIFT OPTION IN HEADER (KIDS | MEN | WOMEN) -->
-                    <div class="dept-switcher-container" id="header-dept-switcher">
-                        <button class="dept-pill active" data-dept="Kids" onclick="switchDepartment('Kids')" title="Switch to Kids Wear Server/Site">
-                            <i class="fa-solid fa-child"></i> 🧒 Kids Wear
-                        </button>
-                        <button class="dept-pill" data-dept="Men" onclick="switchDepartment('Men')" title="Switch to Men Wear Server/Site">
-                            <i class="fa-solid fa-user-tie"></i> 👨 Men Wear
-                        </button>
-                        <button class="dept-pill" data-dept="Women" onclick="switchDepartment('Women')" title="Switch to Women Wear Server/Site">
-                            <i class="fa-solid fa-user-dress"></i> 👩 Women Wear
-                        </button>
-                    </div>
+
                 </div>
                 <div class="topbar-right">
                     <!-- Theme Selector -->
@@ -956,69 +944,7 @@
         </main>
     </div>
 
-    <!-- MODAL 1: LOGIN MODAL -->
-    <div class="modal-backdrop show" id="modal-login">
-        <div class="modal-box login-modal-box">
-            <div class="login-header">
-                <div class="brand-logo logo-lg">
-                    <i class="fa-solid fa-bolt logo-icon"></i>
-                </div>
-                <h2>Welcome to StorePilot</h2>
-                <p>Select your user role and enter PIN password</p>
-            </div>
-            <form id="login-form">
-                <div class="modal-body">
-                    <div class="role-selector-cards">
-                        <label class="role-card active" id="role-card-admin" onclick="selectRole('Admin')">
-                            <input type="radio" name="login-role" value="Admin" checked style="display:none;">
-                            <i class="fa-solid fa-user-shield role-icon"></i>
-                            <div class="role-title">Admin</div>
-                            <div class="role-desc">Full System Access & Delete Permissions</div>
-                        </label>
-                        <label class="role-card" id="role-card-cashier" onclick="selectRole('Cashier')">
-                            <input type="radio" name="login-role" value="Cashier" style="display:none;">
-                            <i class="fa-solid fa-cash-register role-icon"></i>
-                            <div class="role-title">Cashier</div>
-                            <div class="role-desc">POS Billing & Product Entry (No Delete)</div>
-                        </label>
-                    </div>
 
-                    <div class="dept-login-selector" style="margin-top:16px;">
-                        <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:8px;">
-                            <i class="fa-solid fa-store"></i> Select Target Department:
-                        </label>
-                        <div class="dept-selector-cards">
-                            <label class="dept-login-card active" id="login-dept-kids" onclick="selectLoginDept('Kids')">
-                                <input type="radio" name="login-dept" value="Kids" checked style="display:none;">
-                                <i class="fa-solid fa-child"></i>
-                                <div>🧒 Kids Wear</div>
-                            </label>
-                            <label class="dept-login-card" id="login-dept-men" onclick="selectLoginDept('Men')">
-                                <input type="radio" name="login-dept" value="Men" style="display:none;">
-                                <i class="fa-solid fa-user-tie"></i>
-                                <div>👨 Men Wear</div>
-                            </label>
-                            <label class="dept-login-card" id="login-dept-women" onclick="selectLoginDept('Women')">
-                                <input type="radio" name="login-dept" value="Women" style="display:none;">
-                                <i class="fa-solid fa-user-dress"></i>
-                                <div>👩 Women Wear</div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group" style="margin-top:16px;">
-                        <label>PIN Password</label>
-                        <input type="password" id="login-pass" class="form-control" placeholder="Enter PIN Password" required autocomplete="new-password">
-                    </div>
-                </div>
-                <div class="modal-footer anim-footer">
-                    <button type="submit" class="btn-primary btn-lg-login">
-                        <i class="fa-solid fa-right-to-bracket"></i> Login to StorePilot
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- MODAL 2: RECEIPT MODAL -->
     <div class="modal-backdrop" id="modal-receipt">
@@ -1260,95 +1186,6 @@
             <div class="modal-footer anim-footer">
                 <button class="btn-primary" onclick="closeModal('modal-error-alert')">Try Again</button>
             </div>
-        </div>
-    </div>
-
-    <!-- MODAL 8: ENTRY DEPARTMENT & LOGIN PORTAL MODAL (BEFORE LOGIN SELECTION) -->
-    <div class="modal-backdrop active" id="modal-entry-login">
-        <div class="modal-box portal-modal-box">
-            <div class="portal-header">
-                <div class="portal-logo">
-                    <i class="fa-solid fa-bolt logo-icon"></i>
-                </div>
-                <h2>StorePilot Multi-Store POS</h2>
-                <p>Select Store Department & Enter PIN to Start Billing</p>
-            </div>
-
-            <!-- 1. DEPARTMENT SELECTOR CARDS (KIDS | MEN | WOMEN) -->
-            <div class="portal-section-title">
-                <i class="fa-solid fa-store"></i> 1. Choose Store Department
-            </div>
-            <div class="dept-card-grid">
-                <div class="dept-card active" data-dept="Kids" onclick="selectLoginDept('Kids')">
-                    <div class="dept-icon-circle kids">
-                        <i class="fa-solid fa-child-reaching"></i>
-                    </div>
-                    <div class="dept-card-info">
-                        <h3>🧒 Kids Wear</h3>
-                        <p>Frocks, Onesies, Kids T-Shirts, Jeans, Shoes & Toys</p>
-                    </div>
-                    <div class="dept-check"><i class="fa-solid fa-circle-check"></i></div>
-                </div>
-
-                <div class="dept-card" data-dept="Men" onclick="selectLoginDept('Men')">
-                    <div class="dept-icon-circle men">
-                        <i class="fa-solid fa-user-tie"></i>
-                    </div>
-                    <div class="dept-card-info">
-                        <h3>👨 Men's Wear</h3>
-                        <p>Shirts, T-Shirts, Trousers, Suits, Formal & Casual</p>
-                    </div>
-                    <div class="dept-check"><i class="fa-solid fa-circle-check"></i></div>
-                </div>
-
-                <div class="dept-card" data-dept="Women" onclick="selectLoginDept('Women')">
-                    <div class="dept-icon-circle women">
-                        <i class="fa-solid fa-user-dress"></i>
-                    </div>
-                    <div class="dept-card-info">
-                        <h3>👩 Women's Wear</h3>
-                        <p>Sarees, Kurtis, Salwar Suits, Tops & Dresses</p>
-                    </div>
-                    <div class="dept-check"><i class="fa-solid fa-circle-check"></i></div>
-                </div>
-            </div>
-
-            <!-- 2. ROLE SELECTOR (ADMIN vs CASHIER) -->
-            <div class="portal-section-title" style="margin-top: 15px;">
-                <i class="fa-solid fa-user-shield"></i> 2. Select User Role & Enter PIN
-            </div>
-            <form id="portal-login-form">
-                <div class="role-selector-pills">
-                    <button type="button" class="role-pill active" data-role="Admin" onclick="selectLoginRole('Admin')">
-                        <i class="fa-solid fa-crown"></i> Admin (Full Control)
-                    </button>
-                    <button type="button" class="role-pill" data-role="Cashier" onclick="selectLoginRole('Cashier')">
-                        <i class="fa-solid fa-cash-register"></i> Cashier (POS Terminal)
-                    </button>
-                </div>
-
-                <div class="form-group" style="margin-top: 12px;">
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span>Security PIN Password</span>
-                        <span class="pin-hint-badge" id="pin-hint-text">Admin Default PIN: <strong>1234</strong></span>
-                    </label>
-                    <div class="pin-input-wrap">
-                        <i class="fa-solid fa-key input-key-icon"></i>
-                        <input type="password" id="portal-pin-input" class="form-control pin-field" placeholder="Enter PIN (e.g. 1234)" required autocomplete="off" maxlength="10">
-                        <button type="button" class="btn-toggle-eye" onclick="togglePinVisibility()"><i class="fa-solid fa-eye" id="eye-icon"></i></button>
-                    </div>
-                </div>
-
-                <div class="login-alert-box" id="login-error-msg" style="display: none;">
-                    <i class="fa-solid fa-circle-exclamation"></i> <span id="login-error-text">Incorrect PIN! Admin default PIN is 1234, Cashier is 0000.</span>
-                </div>
-
-                <div class="portal-actions">
-                    <button type="submit" class="btn-portal-launch" id="btn-launch-portal">
-                        <i class="fa-solid fa-rocket"></i> Launch Kids Wear POS Terminal
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 

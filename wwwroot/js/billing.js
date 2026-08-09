@@ -57,15 +57,14 @@ function renderPOSCatalog() {
     const currentDept = state.activeDepartment || 'Kids';
 
     const filtered = (state.products || []).filter(p => {
-        const matchesDept = !p.department || p.department === currentDept;
         const matchesAge = selectedAgeFilter === 'All' || p.ageGroup === selectedAgeFilter;
         const matchesCat = selectedCategoryFilter === 'All' || p.category === selectedCategoryFilter;
         const matchesSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || p.sku.toLowerCase().includes(searchTerm);
-        return matchesDept && matchesAge && matchesCat && matchesSearch;
+        return matchesAge && matchesCat && matchesSearch;
     });
 
     if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 40px;">No ${currentDept} wear items matching selected filters</div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 40px;">No items matching selected filters</div>`;
         return;
     }
 

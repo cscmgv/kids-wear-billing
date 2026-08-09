@@ -3,12 +3,9 @@
 let state = {
     currentUser: {
         role: 'Admin',
-        name: 'System Admin'
+        name: 'Store Manager'
     },
     activeDepartment: 'Kids', // 'Kids', 'Men', or 'Women'
-    selectedLoginDept: 'Kids',
-    selectedLoginRole: 'Admin',
-    isLoggedIn: false,
     dashboard: null,
     products: [],
     invoices: [],
@@ -36,8 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initFilterPillEvents();
     initReportFilters();
 
-    document.getElementById('portal-login-form')?.addEventListener('submit', handlePortalLoginSubmit);
-
     // Initial Data Load
     loadDashboardData();
     loadProductsMaster();
@@ -49,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadRecordBook();
     loadSettings();
 
+    document.body.classList.remove('not-logged-in');
+    updateHeaderDeptPills('Kids');
+    updateLoggedUserBadge();
     applyRolePermissions();
     updatePOSFilterChipsForDept('Kids');
 
@@ -161,6 +159,7 @@ async function handlePortalLoginSubmit(e) {
             state.isLoggedIn = true;
             state.activeDepartment = dept;
 
+            document.body.classList.remove('not-logged-in');
             document.getElementById('modal-entry-login')?.classList.remove('active');
             playSound('success');
 
@@ -174,7 +173,7 @@ async function handlePortalLoginSubmit(e) {
             if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
 
         } else {
-            playSound('alert');
+            playSound('error');
             if (errBox) errBox.style.display = 'flex';
             if (errText) errText.textContent = data.message || `Incorrect PIN password! Default ${role} PIN is ${role === 'Admin' ? '1234' : '0000'}.`;
         }
@@ -185,6 +184,7 @@ async function handlePortalLoginSubmit(e) {
             state.currentUser = { role: role, name: role === 'Admin' ? 'System Admin' : 'Cashier Staff' };
             state.isLoggedIn = true;
             state.activeDepartment = dept;
+            document.body.classList.remove('not-logged-in');
             document.getElementById('modal-entry-login')?.classList.remove('active');
             playSound('success');
             updateHeaderDeptPills(dept);
@@ -195,7 +195,7 @@ async function handlePortalLoginSubmit(e) {
             loadProductsMaster();
             if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
         } else {
-            playSound('alert');
+            playSound('error');
             if (errBox) errBox.style.display = 'flex';
             if (errText) errText.textContent = `Incorrect PIN password! Default ${role} PIN is ${role === 'Admin' ? '1234' : '0000'}.`;
         }
@@ -215,14 +215,7 @@ function switchDepartment(dept) {
 }
 
 function updateHeaderDeptPills(dept) {
-    const pills = document.querySelectorAll('#header-dept-switcher .dept-pill');
-    pills.forEach(pill => {
-        if (pill.getAttribute('data-dept') === dept) {
-            pill.classList.add('active');
-        } else {
-            pill.classList.remove('active');
-        }
-    });
+    // Header department switcher removed
 }
 
 function updateLoggedUserBadge() {
@@ -230,9 +223,9 @@ function updateLoggedUserBadge() {
     const roleEl = document.getElementById('logged-user-role');
     const topbarBadge = document.getElementById('topbar-role-badge');
 
-    if (nameEl) nameEl.textContent = state.currentUser.name || 'User';
-    if (roleEl) roleEl.innerHTML = `<span class="status-dot"></span> ${state.currentUser.role} (<span id="logged-dept-badge">${state.activeDepartment}</span>)`;
-    if (topbarBadge) topbarBadge.textContent = `Role: ${state.currentUser.role} | Store: ${state.activeDepartment} Wear`;
+    if (nameEl) nameEl.textContent = state.currentUser.name || 'Store Manager';
+    if (roleEl) roleEl.innerHTML = `<span class="status-dot"></span> Active`;
+    if (topbarBadge) topbarBadge.textContent = `Role: ${state.currentUser.role}`;
 }
 
 function updatePOSFilterChipsForDept(dept) {
@@ -323,29 +316,15 @@ function updatePOSFilterChipsForDept(dept) {
 }
 
 function showLoginPortal() {
-    playSound('click');
-    const portal = document.getElementById('modal-entry-login');
-    if (portal) {
-        portal.classList.add('active');
-        selectLoginDept(state.activeDepartment || 'Kids');
-        selectLoginRole(state.currentUser?.role || 'Admin');
-        const pinInput = document.getElementById('portal-pin-input');
-        if (pinInput) {
-            pinInput.value = '';
-            pinInput.focus();
-        }
-    }
+    document.body.classList.remove('not-logged-in');
 }
 
 function openLoginModal() {
-    showLoginPortal();
+    // Login modal removed
 }
 
 function logout(event) {
     if (event) event.stopPropagation();
-    playSound('click');
-    state.isLoggedIn = false;
-    showLoginPortal();
 }
 
 // INSTANT AUTO-FILTER CONTROL BAR LISTENERS (ANY CLICK/CHANGE TRIGGERS INSTANT FILTER)
@@ -459,63 +438,11 @@ function selectRole(role) {
 }
 
 function selectLoginDept(dept) {
-    playSound('click');
     state.selectedLoginDepartment = dept;
-
-    document.getElementById('login-dept-kids')?.classList.toggle('active', dept === 'Kids');
-    document.getElementById('login-dept-men')?.classList.toggle('active', dept === 'Men');
-    document.getElementById('login-dept-women')?.classList.toggle('active', dept === 'Women');
 }
 
-function openLoginModal() {
-    playSound('click');
-    const passInput = document.getElementById('login-pass');
-    if (passInput) passInput.value = '';
-    document.getElementById('modal-login')?.classList.add('show');
-}
-
-async function handleLoginSubmit(e) {
-    e.preventDefault();
-    const pass = document.getElementById('login-pass').value;
-    const selectedRole = state.currentUser.role || 'Admin';
-
-    try {
-        const res = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                username: selectedRole.toLowerCase(),
-                password: pass,
-                role: selectedRole
-            })
-        });
-
-        if (res.ok) {
-            const authData = await res.json();
-            state.currentUser.role = authData.role;
-            state.currentUser.name = authData.name;
-
-            playSound('success');
-            closeModal('modal-login');
-            applyRolePermissions();
-
-            // Switch to department selected during login!
-            if (state.selectedLoginDepartment) {
-                switchDepartment(state.selectedLoginDepartment);
-            }
-
-            if (authData.role === 'Cashier') {
-                switchTab('view-billing');
-            } else {
-                switchTab('view-dashboard');
-            }
-        } else {
-            const errData = await res.json().catch(() => ({}));
-            showErrorModal('Incorrect Password', errData.message || 'Incorrect Password! Please enter valid PIN.');
-        }
-    } catch (err) {
-        console.error('Login error:', err);
-    }
+function handleLoginSubmit(e) {
+    if (e) e.preventDefault();
 }
 
 function applyRolePermissions() {
@@ -1589,5 +1516,9 @@ function showErrorModal(title, msg) {
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId)?.classList.remove('show');
+    const el = document.getElementById(modalId);
+    if (el) {
+        el.classList.remove('show');
+        el.classList.remove('active');
+    }
 }

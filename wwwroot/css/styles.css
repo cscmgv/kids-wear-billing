@@ -1408,7 +1408,8 @@ body.theme-dark .cart-summary {
     justify-content: center;
 }
 
-.modal-backdrop.show {
+.modal-backdrop.show,
+.modal-backdrop.active {
     display: flex;
     animation: fadeIn 0.2s ease;
 }
