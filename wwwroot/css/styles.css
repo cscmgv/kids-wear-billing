@@ -294,6 +294,58 @@ body {
     border-radius: 12px;
 }
 
+/* HEADER 3-DEPARTMENT SHIFT SWITCHER */
+.dept-switcher-container {
+    display: flex;
+    align-items: center;
+    background-color: #f1f5f9;
+    padding: 3px;
+    border-radius: 12px;
+    gap: 4px;
+    margin-left: 12px;
+    border: 1px solid var(--border-color);
+}
+
+body.theme-dark .dept-switcher-container {
+    background-color: #1e293b;
+}
+
+.dept-pill {
+    border: none;
+    background: transparent;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dept-pill:hover {
+    background-color: rgba(255,255,255,0.6);
+}
+
+.dept-pill.active {
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.dept-pill.active[data-dept="Kids"] {
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+}
+
+.dept-pill.active[data-dept="Men"] {
+    background: linear-gradient(135deg, #059669, #047857);
+}
+
+.dept-pill.active[data-dept="Women"] {
+    background: linear-gradient(135deg, #d946ef, #c026d3);
+}
+
 .topbar-right {
     display: flex;
     align-items: center;

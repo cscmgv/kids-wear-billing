@@ -72,9 +72,13 @@ app.MapGet("/api/reports", (DataStore store, string? groupBy, string? period, st
 });
 
 // Products Endpoints
-app.MapGet("/api/products", (DataStore store, string? category, string? ageGroup, string? search) =>
+app.MapGet("/api/products", (DataStore store, string? dept, string? category, string? ageGroup, string? search) =>
 {
     var products = store.Data.Products.AsQueryable();
+    if (!string.IsNullOrEmpty(dept) && dept != "All")
+    {
+        products = products.Where(p => p.Department.Equals(dept, StringComparison.OrdinalIgnoreCase));
+    }
     if (!string.IsNullOrEmpty(category) && category != "All")
     {
         products = products.Where(p => p.Category.Equals(category, StringComparison.OrdinalIgnoreCase));

@@ -6,12 +6,13 @@ namespace KidsBillingApp.Models
     public class Product
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Department { get; set; } = "Kids"; // Kids, Men, Women
         public string Name { get; set; } = string.Empty;
         public string SKU { get; set; } = string.Empty;
-        public string Category { get; set; } = "General"; // Frocks, Onesies, T-Shirts, Jeans, Ethnic Wear, Party Wear, Nightwear, Accessories, Shoes
-        public string AgeGroup { get; set; } = "2-5Y"; // 0-2Y, 2-5Y, 5-10Y, 10-16Y
-        public string Size { get; set; } = "M"; // 0-3M, 3-6M, 6-12M, 1-2Y, 2-4Y, 4-6Y, 6-8Y, 8-10Y, 10-12Y, S, M, L
-        public string Brand { get; set; } = "Kids Choice";
+        public string Category { get; set; } = "General"; // Frocks, Onesies, T-Shirts, Jeans, Ethnic Wear, Party Wear, Nightwear, Accessories, Shoes, Shirts, Sarees, Kurtis, Salwar
+        public string AgeGroup { get; set; } = "2-5Y"; // 0-2Y, 2-5Y, 5-10Y, 10-16Y, Adult
+        public string Size { get; set; } = "M"; // 0-3M, 3-6M, 6-12M, 1-2Y, 2-4Y, 4-6Y, 6-8Y, 8-10Y, 10-12Y, S, M, L, XL, XXL, 32, 34, 36, 38, 40
+        public string Brand { get; set; } = "StorePilot Fashion";
         public decimal Price { get; set; }
         public decimal MRP { get; set; }
         public decimal CostPrice { get; set; }
@@ -36,6 +37,7 @@ namespace KidsBillingApp.Models
     public class Invoice
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Department { get; set; } = "Kids"; // Kids, Men, Women
         public string InvoiceNo { get; set; } = string.Empty;
         public DateTime Date { get; set; } = DateTime.Now;
         public string CustomerName { get; set; } = "Walk-in Customer";

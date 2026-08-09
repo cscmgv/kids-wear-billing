@@ -95,6 +95,19 @@
                 <div class="topbar-left">
                     <h1 class="page-title" id="page-title">Dashboard</h1>
                     <span class="badge-role" id="topbar-role-badge">Role: Admin</span>
+
+                    <!-- 3-DEPARTMENT SHIFT OPTION IN HEADER (KIDS | MEN | WOMEN) -->
+                    <div class="dept-switcher-container" id="header-dept-switcher">
+                        <button class="dept-pill active" data-dept="Kids" onclick="switchDepartment('Kids')" title="Switch to Kids Wear Server/Site">
+                            <i class="fa-solid fa-child"></i> 🧒 Kids Wear
+                        </button>
+                        <button class="dept-pill" data-dept="Men" onclick="switchDepartment('Men')" title="Switch to Men Wear Server/Site">
+                            <i class="fa-solid fa-user-tie"></i> 👨 Men Wear
+                        </button>
+                        <button class="dept-pill" data-dept="Women" onclick="switchDepartment('Women')" title="Switch to Women Wear Server/Site">
+                            <i class="fa-solid fa-user-dress"></i> 👩 Women Wear
+                        </button>
+                    </div>
                 </div>
                 <div class="topbar-right">
                     <!-- Theme Selector -->

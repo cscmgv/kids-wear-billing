@@ -916,18 +916,71 @@ async function loadProductsMaster() {
     }
 }
 
+function switchDepartment(dept) {
+    playSound('click');
+    state.activeDepartment = dept;
+
+    // Highlight header pill
+    document.querySelectorAll('#header-dept-switcher .dept-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-dept') === dept);
+    });
+
+    // Update POS category chips
+    updatePOSCategoryChips(dept);
+
+    // Refresh views for active department
+    loadDashboardData();
+    renderProductsTable(state.products || []);
+    if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
+    if (typeof renderStockView === 'function') renderStockView();
+    loadComprehensiveReport();
+}
+
+function updatePOSCategoryChips(dept) {
+    const catChipsContainer = document.getElementById('pos-cat-chips');
+    if (!catChipsContainer) return;
+
+    let categories = [];
+    if (dept === 'Kids') {
+        categories = ['All', 'Frocks', 'Onesies', 'T-Shirts', 'Jeans', 'Ethnic Wear', 'Party Wear', 'Shoes'];
+    } else if (dept === 'Men') {
+        categories = ['All', 'Shirts', 'T-Shirts', 'Jeans', 'Ethnic Wear', 'Shoes'];
+    } else if (dept === 'Women') {
+        categories = ['All', 'Sarees', 'Kurtis', 'Salwar', 'Tops', 'Shoes'];
+    }
+
+    if (typeof selectedCategoryFilter !== 'undefined') selectedCategoryFilter = 'All';
+
+    catChipsContainer.innerHTML = categories.map((cat, idx) => `
+        <button class="chip ${idx === 0 ? 'active' : ''}" data-cat="${cat}">${cat}</button>
+    `).join('');
+
+    catChipsContainer.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            playSound('click');
+            catChipsContainer.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            if (typeof selectedCategoryFilter !== 'undefined') selectedCategoryFilter = btn.getAttribute('data-cat');
+            if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
+        });
+    });
+}
+
 function renderProductsTable(products) {
     const tbody = document.getElementById('products-tbody');
     if (!tbody) return;
 
-    if (products.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;">No products found</td></tr>`;
+    const currentDept = state.activeDepartment || 'Kids';
+    const filteredProds = (products || []).filter(p => !p.department || p.department === currentDept);
+
+    if (filteredProds.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:#94a3b8;padding:24px;">No ${currentDept} wear products found. Click "Add New Product" to add.</td></tr>`;
         return;
     }
 
     const isAdmin = state.currentUser.role === 'Admin';
 
-    tbody.innerHTML = products.map(p => `
+    tbody.innerHTML = filteredProds.map(p => `
         <tr>
             <td>
                 <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=100'}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
@@ -1154,7 +1207,15 @@ function renderStockView() {
     const tbody = document.getElementById('stock-tbody');
     if (!tbody || !state.products) return;
 
-    tbody.innerHTML = state.products.map(p => `
+    const currentDept = state.activeDepartment || 'Kids';
+    const filteredProds = state.products.filter(p => !p.department || p.department === currentDept);
+
+    if (filteredProds.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:24px;">No ${currentDept} wear inventory items found</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filteredProds.map(p => `
         <tr>
             <td><strong>${p.name}</strong></td>
             <td><code>${p.sku}</code></td>
@@ -1167,7 +1228,7 @@ function renderStockView() {
                 </span>
             </td>
             <td>
-                ${p.stock <= p.minLevel ? `<button class="btn-whatsapp" style="padding:4px 8px;font-size:11px;" onclick="sendWhatsAppReorder('Tirupur Supplier', '9443322110', '${p.name}', '${p.size}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Reorder</button>` : 'OK'}
+                ${p.stock <= p.minLevel ? `<button class="btn-whatsapp" style="padding:4px 8px;font-size:11px;" onclick="sendWhatsAppReorder('Supplier', '9443322110', '${p.name}', '${p.size}')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Reorder</button>` : 'OK'}
             </td>
         </tr>
     `).join('');
