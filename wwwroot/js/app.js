@@ -5,6 +5,10 @@ let state = {
         role: 'Admin',
         name: 'System Admin'
     },
+    activeDepartment: 'Kids', // 'Kids', 'Men', or 'Women'
+    selectedLoginDept: 'Kids',
+    selectedLoginRole: 'Admin',
+    isLoggedIn: false,
     dashboard: null,
     products: [],
     invoices: [],
@@ -32,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFilterPillEvents();
     initReportFilters();
 
-    document.getElementById('login-form')?.addEventListener('submit', handleLoginSubmit);
+    document.getElementById('portal-login-form')?.addEventListener('submit', handlePortalLoginSubmit);
 
     // Initial Data Load
     loadDashboardData();
@@ -46,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
 
     applyRolePermissions();
+    updatePOSFilterChipsForDept('Kids');
 
     document.getElementById('dash-refresh-btn')?.addEventListener('click', () => {
         playSound('click');
@@ -76,6 +81,272 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('supplier-form')?.addEventListener('submit', handleSupplierSubmit);
     document.getElementById('settings-form')?.addEventListener('submit', handleSettingsSubmit);
 });
+
+// --- DEPARTMENT & LOGIN PORTAL FUNCTIONS ---
+function selectLoginDept(dept) {
+    playSound('click');
+    state.selectedLoginDept = dept;
+    document.querySelectorAll('.dept-card').forEach(card => {
+        if (card.getAttribute('data-dept') === dept) {
+            card.classList.add('active');
+        } else {
+            card.classList.remove('active');
+        }
+    });
+
+    const launchBtn = document.getElementById('btn-launch-portal');
+    if (launchBtn) {
+        const icon = dept === 'Kids' ? '🧒' : dept === 'Men' ? '👨' : '👩';
+        launchBtn.innerHTML = `<i class="fa-solid fa-rocket"></i> Launch ${icon} ${dept} Wear POS Terminal`;
+    }
+}
+
+function selectLoginRole(role) {
+    playSound('click');
+    state.selectedLoginRole = role;
+    document.querySelectorAll('.role-pill').forEach(pill => {
+        if (pill.getAttribute('data-role') === role) {
+            pill.classList.add('active');
+        } else {
+            pill.classList.remove('active');
+        }
+    });
+
+    const hint = document.getElementById('pin-hint-text');
+    if (hint) {
+        if (role === 'Admin') {
+            hint.innerHTML = `Admin Default PIN: <strong>1234</strong>`;
+        } else {
+            hint.innerHTML = `Cashier Default PIN: <strong>0000</strong>`;
+        }
+    }
+}
+
+function togglePinVisibility() {
+    const input = document.getElementById('portal-pin-input');
+    const icon = document.getElementById('eye-icon');
+    if (!input || !icon) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+    }
+}
+
+async function handlePortalLoginSubmit(e) {
+    e.preventDefault();
+    const pin = document.getElementById('portal-pin-input')?.value || '';
+    const role = state.selectedLoginRole || 'Admin';
+    const dept = state.selectedLoginDept || 'Kids';
+
+    const errBox = document.getElementById('login-error-msg');
+    const errText = document.getElementById('login-error-text');
+
+    try {
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ role, password: pin })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+            if (errBox) errBox.style.display = 'none';
+            state.currentUser = {
+                role: data.role,
+                name: data.name
+            };
+            state.isLoggedIn = true;
+            state.activeDepartment = dept;
+
+            document.getElementById('modal-entry-login')?.classList.remove('active');
+            playSound('success');
+
+            updateHeaderDeptPills(dept);
+            updateLoggedUserBadge();
+            applyRolePermissions();
+            updatePOSFilterChipsForDept(dept);
+
+            loadDashboardData();
+            loadProductsMaster();
+            if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
+
+        } else {
+            playSound('alert');
+            if (errBox) errBox.style.display = 'flex';
+            if (errText) errText.textContent = data.message || `Incorrect PIN password! Default ${role} PIN is ${role === 'Admin' ? '1234' : '0000'}.`;
+        }
+    } catch (err) {
+        console.error("Login error:", err);
+        if ((role === 'Admin' && (pin === '1234' || pin === 'admin123')) || (role === 'Cashier' && (pin === '0000' || pin === 'cashier123'))) {
+            if (errBox) errBox.style.display = 'none';
+            state.currentUser = { role: role, name: role === 'Admin' ? 'System Admin' : 'Cashier Staff' };
+            state.isLoggedIn = true;
+            state.activeDepartment = dept;
+            document.getElementById('modal-entry-login')?.classList.remove('active');
+            playSound('success');
+            updateHeaderDeptPills(dept);
+            updateLoggedUserBadge();
+            applyRolePermissions();
+            updatePOSFilterChipsForDept(dept);
+            loadDashboardData();
+            loadProductsMaster();
+            if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
+        } else {
+            playSound('alert');
+            if (errBox) errBox.style.display = 'flex';
+            if (errText) errText.textContent = `Incorrect PIN password! Default ${role} PIN is ${role === 'Admin' ? '1234' : '0000'}.`;
+        }
+    }
+}
+
+function switchDepartment(dept) {
+    playSound('click');
+    state.activeDepartment = dept;
+    updateHeaderDeptPills(dept);
+    updateLoggedUserBadge();
+    updatePOSFilterChipsForDept(dept);
+
+    loadDashboardData();
+    loadProductsMaster();
+    if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
+}
+
+function updateHeaderDeptPills(dept) {
+    const pills = document.querySelectorAll('#header-dept-switcher .dept-pill');
+    pills.forEach(pill => {
+        if (pill.getAttribute('data-dept') === dept) {
+            pill.classList.add('active');
+        } else {
+            pill.classList.remove('active');
+        }
+    });
+}
+
+function updateLoggedUserBadge() {
+    const nameEl = document.getElementById('logged-user-name');
+    const roleEl = document.getElementById('logged-user-role');
+    const topbarBadge = document.getElementById('topbar-role-badge');
+
+    if (nameEl) nameEl.textContent = state.currentUser.name || 'User';
+    if (roleEl) roleEl.innerHTML = `<span class="status-dot"></span> ${state.currentUser.role} (<span id="logged-dept-badge">${state.activeDepartment}</span>)`;
+    if (topbarBadge) topbarBadge.textContent = `Role: ${state.currentUser.role} | Store: ${state.activeDepartment} Wear`;
+}
+
+function updatePOSFilterChipsForDept(dept) {
+    const catContainer = document.getElementById('pos-cat-chips');
+    const ageContainer = document.getElementById('pos-age-chips');
+    const searchInput = document.getElementById('pos-search');
+
+    if (searchInput) {
+        searchInput.placeholder = `Search ${dept} Wear by Product Name, Barcode SKU or Brand...`;
+    }
+
+    if (catContainer) {
+        let cats = [];
+        if (dept === 'Kids') {
+            cats = ['All', 'Frocks', 'Onesies', 'T-Shirts', 'Jeans', 'Ethnic Wear', 'Party Wear', 'Shoes'];
+        } else if (dept === 'Men') {
+            cats = ['All', 'Shirts', 'T-Shirts', 'Jeans', 'Ethnic Wear', 'Trousers', 'Suits', 'Shoes'];
+        } else if (dept === 'Women') {
+            cats = ['All', 'Sarees', 'Kurtis', 'Salwar', 'Tops', 'Dresses', 'Jeans', 'Accessories'];
+        } else {
+            cats = ['All', 'Shirts', 'T-Shirts', 'Jeans', 'Frocks', 'Sarees', 'Kurtis'];
+        }
+
+        catContainer.innerHTML = cats.map((c, i) => `
+            <button class="chip ${i === 0 ? 'active' : ''}" data-cat="${c}">${c === 'All' ? 'All Categories' : c}</button>
+        `).join('');
+
+        catContainer.querySelectorAll('.chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                playSound('click');
+                catContainer.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+                btn.classList.add('active');
+                if (typeof selectedCategoryFilter !== 'undefined') {
+                    selectedCategoryFilter = btn.getAttribute('data-cat');
+                }
+                if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
+            });
+        });
+    }
+
+    if (ageContainer) {
+        let ages = [];
+        if (dept === 'Kids') {
+            ages = [
+                { label: 'All Ages', val: 'All' },
+                { label: '0-2 Y (Infants)', val: '0-2Y' },
+                { label: '2-5 Y (Toddlers)', val: '2-5Y' },
+                { label: '5-10 Y (Kids)', val: '5-10Y' },
+                { label: '10-16 Y (Teens)', val: '10-16Y' }
+            ];
+        } else if (dept === 'Men') {
+            ages = [
+                { label: 'All Sizes', val: 'All' },
+                { label: 'S (Small)', val: 'S' },
+                { label: 'M (Medium)', val: 'M' },
+                { label: 'L (Large)', val: 'L' },
+                { label: 'XL (Extra Large)', val: 'XL' },
+                { label: '32 Waist', val: '32' },
+                { label: '34 Waist', val: '34' }
+            ];
+        } else if (dept === 'Women') {
+            ages = [
+                { label: 'All Sizes', val: 'All' },
+                { label: 'Free Size', val: 'Free' },
+                { label: 'S (Small)', val: 'S' },
+                { label: 'M (Medium)', val: 'M' },
+                { label: 'L (Large)', val: 'L' },
+                { label: 'XL (Extra Large)', val: 'XL' }
+            ];
+        }
+
+        ageContainer.innerHTML = ages.map((a, i) => `
+            <button class="chip ${i === 0 ? 'active' : ''}" data-age="${a.val}">${a.label}</button>
+        `).join('');
+
+        ageContainer.querySelectorAll('.chip').forEach(btn => {
+            btn.addEventListener('click', () => {
+                playSound('click');
+                ageContainer.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+                btn.classList.add('active');
+                if (typeof selectedAgeFilter !== 'undefined') {
+                    selectedAgeFilter = btn.getAttribute('data-age');
+                }
+                if (typeof renderPOSCatalog === 'function') renderPOSCatalog();
+            });
+        });
+    }
+}
+
+function showLoginPortal() {
+    playSound('click');
+    const portal = document.getElementById('modal-entry-login');
+    if (portal) {
+        portal.classList.add('active');
+        selectLoginDept(state.activeDepartment || 'Kids');
+        selectLoginRole(state.currentUser?.role || 'Admin');
+        const pinInput = document.getElementById('portal-pin-input');
+        if (pinInput) {
+            pinInput.value = '';
+            pinInput.focus();
+        }
+    }
+}
+
+function openLoginModal() {
+    showLoginPortal();
+}
+
+function logout(event) {
+    if (event) event.stopPropagation();
+    playSound('click');
+    state.isLoggedIn = false;
+    showLoginPortal();
+}
 
 // INSTANT AUTO-FILTER CONTROL BAR LISTENERS (ANY CLICK/CHANGE TRIGGERS INSTANT FILTER)
 function initReportFilters() {
