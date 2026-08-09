@@ -187,6 +187,15 @@ function selectRole(role) {
     }
 }
 
+function selectLoginDept(dept) {
+    playSound('click');
+    state.selectedLoginDepartment = dept;
+
+    document.getElementById('login-dept-kids')?.classList.toggle('active', dept === 'Kids');
+    document.getElementById('login-dept-men')?.classList.toggle('active', dept === 'Men');
+    document.getElementById('login-dept-women')?.classList.toggle('active', dept === 'Women');
+}
+
 function openLoginModal() {
     playSound('click');
     const passInput = document.getElementById('login-pass');
@@ -218,6 +227,11 @@ async function handleLoginSubmit(e) {
             playSound('success');
             closeModal('modal-login');
             applyRolePermissions();
+
+            // Switch to department selected during login!
+            if (state.selectedLoginDepartment) {
+                switchDepartment(state.selectedLoginDepartment);
+            }
 
             if (authData.role === 'Cashier') {
                 switchTab('view-billing');

@@ -346,6 +346,43 @@ body.theme-dark .dept-switcher-container {
     background: linear-gradient(135deg, #d946ef, #c026d3);
 }
 
+/* LOGIN MODAL DEPARTMENT SELECTOR CARDS */
+.dept-selector-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.dept-login-card {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    padding: 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.dept-login-card:hover {
+    border-color: var(--primary-blue);
+    background-color: var(--primary-blue-light);
+}
+
+.dept-login-card.active {
+    border: 2px solid var(--primary-blue);
+    background-color: var(--primary-blue-light);
+    color: var(--primary-blue);
+}
+
+.dept-login-card i {
+    font-size: 15px;
+    display: block;
+    margin-bottom: 4px;
+}
+
 .topbar-right {
     display: flex;
     align-items: center;

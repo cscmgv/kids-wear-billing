@@ -983,6 +983,29 @@
                         </label>
                     </div>
 
+                    <div class="dept-login-selector" style="margin-top:16px;">
+                        <label style="font-size:12px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:8px;">
+                            <i class="fa-solid fa-store"></i> Select Target Department:
+                        </label>
+                        <div class="dept-selector-cards">
+                            <label class="dept-login-card active" id="login-dept-kids" onclick="selectLoginDept('Kids')">
+                                <input type="radio" name="login-dept" value="Kids" checked style="display:none;">
+                                <i class="fa-solid fa-child"></i>
+                                <div>🧒 Kids Wear</div>
+                            </label>
+                            <label class="dept-login-card" id="login-dept-men" onclick="selectLoginDept('Men')">
+                                <input type="radio" name="login-dept" value="Men" style="display:none;">
+                                <i class="fa-solid fa-user-tie"></i>
+                                <div>👨 Men Wear</div>
+                            </label>
+                            <label class="dept-login-card" id="login-dept-women" onclick="selectLoginDept('Women')">
+                                <input type="radio" name="login-dept" value="Women" style="display:none;">
+                                <i class="fa-solid fa-user-dress"></i>
+                                <div>👩 Women Wear</div>
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="form-group" style="margin-top:16px;">
                         <label>PIN Password</label>
                         <input type="password" id="login-pass" class="form-control" placeholder="Enter PIN Password" required autocomplete="new-password">
