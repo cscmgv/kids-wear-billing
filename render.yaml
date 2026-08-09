@@ -1,0 +1,11 @@
+# RENDER BLUEPRINT INFRASTRUCTURE CONFIGURATION
+services:
+  - type: web
+    name: kids-wear-billing
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 8080
