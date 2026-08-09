@@ -26,6 +26,9 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5164";
+app.Urls.Add($"http://*:{port}");
+
 app.UseCors("AllowAll");
 app.UseDefaultFiles();
 app.UseStaticFiles();
