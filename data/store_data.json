@@ -1,0 +1,292 @@
+{
+  "Products": [
+    {
+      "Id": "p1",
+      "Name": "Baby Soft Cotton Onesie Set (3 Pack)",
+      "SKU": "KW-ONS-01",
+      "Category": "Onesies",
+      "AgeGroup": "0-2Y",
+      "Size": "3-6M",
+      "Brand": "BabyHug",
+      "Price": 499,
+      "MRP": 699,
+      "CostPrice": 320,
+      "TaxRate": 5,
+      "Stock": 15,
+      "MinLevel": 5,
+      "ImageUrl": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=300"
+    },
+    {
+      "Id": "p2",
+      "Name": "Little Princess Floral Party Frock",
+      "SKU": "KW-FRK-02",
+      "Category": "Frocks",
+      "AgeGroup": "2-5Y",
+      "Size": "2-4Y",
+      "Brand": "Lilliput",
+      "Price": 899,
+      "MRP": 1299,
+      "CostPrice": 550,
+      "TaxRate": 5,
+      "Stock": 2,
+      "MinLevel": 5,
+      "ImageUrl": "https://images.unsplash.com/photo-1621452773781-0f992fd1f5cb?w=300"
+    },
+    {
+      "Id": "p3",
+      "Name": "Boys Printed Cartoon Cotton T-Shirt",
+      "SKU": "KW-TSH-03",
+      "Category": "T-Shirts",
+      "AgeGroup": "2-5Y",
+      "Size": "4-6Y",
+      "Brand": "Hopscotch",
+      "Price": 349,
+      "MRP": 499,
+      "CostPrice": 200,
+      "TaxRate": 5,
+      "Stock": 24,
+      "MinLevel": 6,
+      "ImageUrl": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=300"
+    },
+    {
+      "Id": "p4",
+      "Name": "Kids Stretchable Denim Jeans",
+      "SKU": "KW-JNS-04",
+      "Category": "Jeans",
+      "AgeGroup": "5-10Y",
+      "Size": "6-8Y",
+      "Brand": "Mothercare",
+      "Price": 799,
+      "MRP": 1099,
+      "CostPrice": 480,
+      "TaxRate": 5,
+      "Stock": 12,
+      "MinLevel": 4,
+      "ImageUrl": "https://images.unsplash.com/photo-1541216970279-affbfdd55aa8?w=300"
+    },
+    {
+      "Id": "p5",
+      "Name": "Festive Boys Ethnic Kurta Pyjama Set",
+      "SKU": "KW-ETH-05",
+      "Category": "Ethnic Wear",
+      "AgeGroup": "5-10Y",
+      "Size": "8-10Y",
+      "Brand": "Manyavar Kids",
+      "Price": 1299,
+      "MRP": 1799,
+      "CostPrice": 800,
+      "TaxRate": 12,
+      "Stock": 8,
+      "MinLevel": 3,
+      "ImageUrl": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=300"
+    },
+    {
+      "Id": "p6",
+      "Name": "Girls Velvet Winter Hooded Jacket",
+      "SKU": "KW-JKT-06",
+      "Category": "Party Wear",
+      "AgeGroup": "10-16Y",
+      "Size": "12-14Y",
+      "Brand": "Gini \u0026 Jony",
+      "Price": 1499,
+      "MRP": 1999,
+      "CostPrice": 950,
+      "TaxRate": 12,
+      "Stock": 6,
+      "MinLevel": 2,
+      "ImageUrl": "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=300"
+    },
+    {
+      "Id": "p7",
+      "Name": "Infant Non-Slip Soft Baby Shoes",
+      "SKU": "KW-SHO-07",
+      "Category": "Shoes",
+      "AgeGroup": "0-2Y",
+      "Size": "6-12M",
+      "Brand": "FirstStep",
+      "Price": 399,
+      "MRP": 599,
+      "CostPrice": 220,
+      "TaxRate": 5,
+      "Stock": 18,
+      "MinLevel": 5,
+      "ImageUrl": "https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=300"
+    },
+    {
+      "Id": "p8",
+      "Name": "Soft Organic Cotton Nightwear Set",
+      "SKU": "KW-NGT-08",
+      "Category": "Nightwear",
+      "AgeGroup": "2-5Y",
+      "Size": "2-4Y",
+      "Brand": "BabyHug",
+      "Price": 599,
+      "MRP": 799,
+      "CostPrice": 360,
+      "TaxRate": 5,
+      "Stock": 10,
+      "MinLevel": 4,
+      "ImageUrl": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=300"
+    }
+  ],
+  "Invoices": [
+    {
+      "Id": "df373d39-888d-4e4e-afd8-67522e351433",
+      "InvoiceNo": "INV-20260809-101",
+      "Date": "2026-08-09T16:31:04.3417701+05:30",
+      "CustomerName": "5tg",
+      "CustomerPhone": "9042474717",
+      "Items": [
+        {
+          "ProductId": "p1",
+          "ProductName": "Baby Soft Cotton Onesie Set (3 Pack)",
+          "SKU": "KW-ONS-01",
+          "Size": "3-6M",
+          "Price": 499,
+          "TaxRate": 5,
+          "Quantity": 1,
+          "Total": 499
+        }
+      ],
+      "SubTotal": 499,
+      "TaxAmount": 24.950000000000003,
+      "DiscountAmount": 0,
+      "TotalAmount": 523.95,
+      "PaymentMode": "UPI",
+      "Status": "Completed",
+      "Notes": "WhatsApp Bill Triggered"
+    }
+  ],
+  "Customers": [
+    {
+      "Id": "c2",
+      "Name": "Arun Kumar",
+      "Phone": "9123456789",
+      "Address": "Velachery, Chennai",
+      "TotalPurchases": 2800,
+      "OutstandingBalance": 450,
+      "LoyaltyPoints": 75
+    },
+    {
+      "Id": "c3",
+      "Name": "Meena Ramesh",
+      "Phone": "9988776655",
+      "Address": "Anna Nagar, Chennai",
+      "TotalPurchases": 6200,
+      "OutstandingBalance": 0,
+      "LoyaltyPoints": 200
+    }
+  ],
+  "Suppliers": [
+    {
+      "Id": "s1",
+      "Name": "Tirupur Kids Garments Pvt Ltd",
+      "Phone": "9443322110",
+      "Company": "Tirupur Tex",
+      "Address": "Tirupur, TN",
+      "OutstandingPayable": 25000
+    },
+    {
+      "Id": "s2",
+      "Name": "Surat Silk \u0026 Frocks Hub",
+      "Phone": "9825012345",
+      "Company": "Surat Frocks Co",
+      "Address": "Surat, Gujarat",
+      "OutstandingPayable": 8400
+    }
+  ],
+  "Expenses": [
+    {
+      "Id": "e1",
+      "Title": "Shop Electricity Bill",
+      "Category": "Utilities",
+      "Amount": 1850,
+      "Date": "2026-08-07T00:00:00+05:30",
+      "Notes": "TNEB Bill July"
+    },
+    {
+      "Id": "e2",
+      "Title": "Staff Salary Advance",
+      "Category": "Payroll",
+      "Amount": 3000,
+      "Date": "2026-08-04T00:00:00+05:30",
+      "Notes": "Sales Staff"
+    }
+  ],
+  "PurchaseOrders": [
+    {
+      "Id": "2022c3bd-f3e1-4d75-b5a8-d07fcde55c1c",
+      "OrderNo": "PO-20260809-101",
+      "SupplierId": "s1",
+      "SupplierName": "Tirupur Tex",
+      "Date": "2026-08-09T16:45:45.3569355+05:30",
+      "TotalAmount": 12500,
+      "Status": "Cancelled",
+      "Items": [
+        {
+          "ProductId": "p1",
+          "ProductName": "Baby Soft Cotton Onesie Set",
+          "SKU": "",
+          "Size": "3-6M",
+          "Price": 320,
+          "TaxRate": 0,
+          "Quantity": 25,
+          "Total": 0
+        }
+      ]
+    }
+  ],
+  "AuditLogs": [
+    {
+      "Id": "7daaf92e-ce75-4bde-8004-d021831a9813",
+      "Timestamp": "2026-08-09T15:53:43.890361+05:30",
+      "ActionType": "DELETE_RECEIPT",
+      "InvoiceNo": "INV-2026-001",
+      "CustomerName": "Kavitha Rajan",
+      "Amount": 1400,
+      "Details": "Deleted receipt \u0026 restored stock for 2 items. Reason: TestDelete",
+      "LogFilePath": "C:\\Users\\ELCOT\\kids\\record_book\\delete\\delete_INV-2026-001_20260809_155343.json"
+    },
+    {
+      "Id": "87f98350-4371-48dc-8ca4-fe6a4e2db90e",
+      "Timestamp": "2026-08-09T16:28:42.0905169+05:30",
+      "ActionType": "DELETE_RECEIPT",
+      "InvoiceNo": "INV-20260809-102",
+      "CustomerName": "s",
+      "Amount": 1678.88,
+      "Details": "Deleted receipt \u0026 restored stock for 1 items. Reason: Customer Order Cancelled",
+      "LogFilePath": "C:\\Users\\ELCOT\\kids\\record_book\\delete\\delete_INV-20260809-102_20260809_162842.json"
+    },
+    {
+      "Id": "53b0c491-9a96-4293-b89d-ff884a834ac2",
+      "Timestamp": "2026-08-09T16:39:28.1232571+05:30",
+      "ActionType": "DELETE_CUSTOMER",
+      "InvoiceNo": "N/A",
+      "CustomerName": "Kavitha Rajan",
+      "Amount": 0,
+      "Details": "Admin deleted customer Kavitha Rajan (9876543210). Reason: AdminDeleteTest",
+      "LogFilePath": "C:\\Users\\ELCOT\\kids\\record_book\\delete\\delete_customer_Kavitha_Rajan_20260809_163928.json"
+    },
+    {
+      "Id": "e2e94e59-cb2b-4ae6-b7eb-30f73fe481e4",
+      "Timestamp": "2026-08-09T16:45:48.9851534+05:30",
+      "ActionType": "CANCEL_SUPPLIER_ORDER",
+      "InvoiceNo": "PO-20260809-101",
+      "CustomerName": "Tirupur Tex",
+      "Amount": 12500,
+      "Details": "Supplier Purchase Order #PO-20260809-101 was CANCELLED. Reason: DelayedDelivery",
+      "LogFilePath": "C:\\Users\\ELCOT\\kids\\record_book\\delete\\cancel_po_PO-20260809-101_20260809_164548.json"
+    }
+  ],
+  "Settings": {
+    "StoreName": "Little Stars Kids Wear",
+    "Address": "123 Main Road, Kids Fashion Hub, Chennai",
+    "Phone": "6383933952",
+    "GSTIN": "33AAAAA0000A1Z5",
+    "WhatsAppApiKey": "demo_whatsapp_key_12345",
+    "WhatsAppSenderPhone": "6383933952",
+    "DefaultMessageTemplate": "Dear {CustomerName}, Thank you for shopping at {StoreName}! Your invoice #{InvoiceNo} for \u20B9{TotalAmount} is ready. Track details here: {InvoiceUrl}. Have a magical day!",
+    "ThermalPrinterName": "POS-80 Thermal Printer",
+    "ActiveTheme": "theme-default"
+  }
+}

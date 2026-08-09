@@ -1,0 +1,16 @@
+# .NET Build output
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+
+# Temporary data logs
+record_book/delete/
+record_book/changes/
+
+# System files
+Thumbs.db
+Desktop.ini
+.DS_Store
